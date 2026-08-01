@@ -7,6 +7,9 @@ from db import run_query, get_schema_info
 
 load_dotenv()
 
+if hasattr(st, "secrets") and "AZURE_OPENAI_ENDPOINT" in st.secrets:
+    os.environ.update({k: str(v) for k, v in st.secrets.items()})
+
 client = AzureOpenAI(
     azure_endpoint=os.environ["AZURE_OPENAI_ENDPOINT"],
     api_key=os.environ["AZURE_OPENAI_API_KEY"],
