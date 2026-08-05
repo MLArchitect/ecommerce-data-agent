@@ -1,4 +1,5 @@
 groq>=0.11.0
+pytds>=1.15.0
 pyodbc>=5.1.0
 azure-identity>=1.19.0
 python-dotenv>=1.0.1
