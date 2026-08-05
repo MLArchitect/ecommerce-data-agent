@@ -1,15 +1,12 @@
 import json
 import os
-from openai import OpenAI
+from groq import Groq
 from dotenv import load_dotenv
 from db import run_query, get_schema_info
 
 load_dotenv()
 
-client = OpenAI(
-    api_key=os.environ["GROQ_API_KEY"],
-    base_url="https://api.groq.com/openai/v1",
-)
+client = Groq(api_key=os.environ["GROQ_API_KEY"])
 
 MODEL = os.environ.get("GROQ_MODEL", "llama-3.3-70b-versatile")
 
