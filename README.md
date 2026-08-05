@@ -2,7 +2,7 @@
 
 An AI-powered agent that answers analytical questions about Olist Brazilian e-commerce data using natural language. Ask questions in plain English and get answers backed by real SQL queries.
 
-**Live app:** Deployed on Streamlit Community Cloud — share the link with your team.
+**Live app:** [https://mlarchitect-ecommerce-data-agent-app-xmrn8l.streamlit.app](https://mlarchitect-ecommerce-data-agent-app-xmrn8l.streamlit.app)
 
 ## How it works
 
