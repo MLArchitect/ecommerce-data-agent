@@ -1,22 +1,21 @@
 import streamlit as st
 import json
 import os
-from openai import AzureOpenAI
+from openai import OpenAI
 from dotenv import load_dotenv
 from db import run_query, get_schema_info
 
 load_dotenv()
 
-if hasattr(st, "secrets") and "AZURE_OPENAI_ENDPOINT" in st.secrets:
+if hasattr(st, "secrets") and "GROQ_API_KEY" in st.secrets:
     os.environ.update({k: str(v) for k, v in st.secrets.items()})
 
-client = AzureOpenAI(
-    azure_endpoint=os.environ["AZURE_OPENAI_ENDPOINT"],
-    api_key=os.environ["AZURE_OPENAI_API_KEY"],
-    api_version=os.environ.get("AZURE_OPENAI_API_VERSION", "2024-12-01-preview"),
+client = OpenAI(
+    api_key=os.environ["GROQ_API_KEY"],
+    base_url="https://api.groq.com/openai/v1",
 )
 
-DEPLOYMENT = os.environ["AZURE_OPENAI_DEPLOYMENT"]
+MODEL = os.environ.get("GROQ_MODEL", "llama-3.3-70b-versatile")
 
 TOOLS = [
     {
@@ -120,7 +119,7 @@ def handle_tool_call(tool_name, tool_args):
 def get_agent_response(conversation_history):
     while True:
         response = client.chat.completions.create(
-            model=DEPLOYMENT,
+            model=MODEL,
             messages=[{"role": "system", "content": SYSTEM_PROMPT}] + conversation_history,
             tools=TOOLS,
             tool_choice="auto",

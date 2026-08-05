@@ -1,18 +1,17 @@
 import json
 import os
-from openai import AzureOpenAI
+from openai import OpenAI
 from dotenv import load_dotenv
 from db import run_query, get_schema_info
 
 load_dotenv()
 
-client = AzureOpenAI(
-    azure_endpoint=os.environ["AZURE_OPENAI_ENDPOINT"],
-    api_key=os.environ["AZURE_OPENAI_API_KEY"],
-    api_version=os.environ.get("AZURE_OPENAI_API_VERSION", "2024-12-01-preview"),
+client = OpenAI(
+    api_key=os.environ["GROQ_API_KEY"],
+    base_url="https://api.groq.com/openai/v1",
 )
 
-DEPLOYMENT = os.environ["AZURE_OPENAI_DEPLOYMENT"]
+MODEL = os.environ.get("GROQ_MODEL", "llama-3.3-70b-versatile")
 
 TOOLS = [
     {
@@ -113,7 +112,7 @@ def chat(user_message, conversation_history):
 
     while True:
         response = client.chat.completions.create(
-            model=DEPLOYMENT,
+            model=MODEL,
             messages=[{"role": "system", "content": SYSTEM_PROMPT}] + conversation_history,
             tools=TOOLS,
             tool_choice="auto",
@@ -139,7 +138,7 @@ def chat(user_message, conversation_history):
 
 def main():
     print("=" * 60)
-    print("  Azure SQL Data Analysis Agent (Azure OpenAI)")
+    print("  E-Commerce Data Analysis Agent")
     print("  Type your question or 'quit' to exit.")
     print("=" * 60)
     print()
