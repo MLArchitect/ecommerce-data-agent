@@ -169,7 +169,8 @@ with st.sidebar:
             cols, rows = run_query("SELECT TOP 1 order_id FROM dbo.order_items")
             st.success(f"Connected! Found column: {cols[0]}")
         except Exception as e:
-            st.error(f"Connection failed:\n{e}")
+            import traceback
+            st.error(f"Connection failed:\n{type(e).__name__}: {e}\n\n{traceback.format_exc()}")
 
 if "messages" not in st.session_state:
     st.session_state.messages = []
