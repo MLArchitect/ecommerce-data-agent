@@ -22,6 +22,17 @@ An AI-powered agent that answers analytical questions about Olist Brazilian e-co
 
 Olist Brazilian e-commerce order items — 112,650 rows covering Oct 2016 to Aug 2018. Columns: order_id, order_item_id, product_id, seller_id, shipping_limit_date, price, freight_value. Currency is BRL (Brazilian Real).
 
+## Example questions
+
+| Question | Answer |
+|----------|--------|
+| What is the total revenue? | ~13,591,298 BRL |
+| What is the average price of an order item? | ~120.65 BRL |
+| How many orders are in the dataset? | ~112,650 order items |
+| Which month had the highest revenue? | Try it and find out! |
+| What is the average freight cost? | Try it and find out! |
+| Who are the top 5 sellers by revenue? | Try it and find out! |
+
 ## Setup
 
 1. Clone the repo
