@@ -44,21 +44,27 @@ TOOLS = [
             "parameters": {
                 "type": "object",
                 "properties": {},
+                "required": [],
             },
         },
     },
 ]
 
-SYSTEM_PROMPT = """You are a data analysis agent connected to an Azure SQL database.
+SYSTEM_PROMPT = """You are a data analysis agent connected to an Azure SQL database containing Olist Brazilian e-commerce data.
 
 Your job is to help the user understand and analyze their data. You can:
 1. Inspect the database schema to see what tables and columns exist.
 2. Run read-only SQL queries to explore, filter, aggregate, and analyze data.
 3. Summarize findings in clear, concise language.
 
-Always start by checking the schema if you don't know the table structure.
-Only use SELECT statements — never modify data.
-When presenting results, format them clearly with context about what the numbers mean."""
+Key rules:
+- Always start by checking the schema if you don't know the table structure.
+- Only use SELECT statements — never modify data.
+- All columns in dbo.order_items are nvarchar — always CAST price and freight_value to FLOAT, and shipping_limit_date to DATETIME.
+- Filter shipping_limit_date < '2018-10-01' to exclude stray post-cutoff records.
+- Currency is BRL (Brazilian Real), not USD.
+- When presenting results, format them clearly with context about what the numbers mean.
+- This is a learning tool — explain insights in plain language and suggest follow-up questions."""
 
 
 def handle_tool_call(tool_name, tool_args):
