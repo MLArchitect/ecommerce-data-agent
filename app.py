@@ -162,16 +162,6 @@ st.set_page_config(
 st.title("📊 E-Commerce Data Agent")
 st.caption("Ask questions about Olist marketplace data (Oct 2016 – Aug 2018) in plain English.")
 
-with st.sidebar:
-    st.header("Connection Status")
-    if st.button("Test Database Connection"):
-        try:
-            cols, rows = run_query("SELECT TOP 1 order_id FROM dbo.order_items")
-            st.success(f"Connected! Found column: {cols[0]}")
-        except Exception as e:
-            import traceback
-            st.error(f"Connection failed:\n{type(e).__name__}: {e}\n\n{traceback.format_exc()}")
-
 if "messages" not in st.session_state:
     st.session_state.messages = []
 if "conversation_history" not in st.session_state:
