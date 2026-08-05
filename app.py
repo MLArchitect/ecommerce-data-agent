@@ -48,6 +48,7 @@ TOOLS = [
             "parameters": {
                 "type": "object",
                 "properties": {},
+                "required": [],
             },
         },
     },
@@ -123,7 +124,17 @@ def get_agent_response(conversation_history):
         )
 
         message = response.choices[0].message
-        conversation_history.append(message)
+        msg_dict = {"role": "assistant", "content": message.content or ""}
+        if message.tool_calls:
+            msg_dict["tool_calls"] = [
+                {
+                    "id": tc.id,
+                    "type": "function",
+                    "function": {"name": tc.function.name, "arguments": tc.function.arguments},
+                }
+                for tc in message.tool_calls
+            ]
+        conversation_history.append(msg_dict)
 
         if message.tool_calls:
             for tool_call in message.tool_calls:
