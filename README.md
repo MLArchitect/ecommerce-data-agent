@@ -29,6 +29,11 @@ Olist Brazilian e-commerce order items — 112,650 rows covering Oct 2016 to Aug
 | What is the total revenue? | ~13,591,298 BRL |
 | What is the average price of an order item? | ~120.65 BRL |
 | How many orders are in the dataset? | 98,663 unique orders (112,650 order items) |
+| Which month had the highest revenue? | Ask the agent! |
+| What is the average freight cost? | Ask the agent! |
+| Who are the top 5 sellers by revenue? | Ask the agent! |
+| What is the average revenue per order? | Ask the agent! |
+| What is the monthly trend of total revenue? | Ask the agent! |
 
 ## Setup
 
