@@ -124,7 +124,7 @@ def get_agent_response(conversation_history):
         )
 
         message = response.choices[0].message
-        msg_dict = {"role": "assistant", "content": message.content or ""}
+        msg_dict = {"role": "assistant", "content": message.content}
         if message.tool_calls:
             msg_dict["tool_calls"] = [
                 {
@@ -140,6 +140,8 @@ def get_agent_response(conversation_history):
             for tool_call in message.tool_calls:
                 args = json.loads(tool_call.function.arguments)
                 result = handle_tool_call(tool_call.function.name, args)
+                if len(result) > 4000:
+                    result = result[:4000] + '...(truncated)'
                 conversation_history.append({
                     "role": "tool",
                     "tool_call_id": tool_call.id,
