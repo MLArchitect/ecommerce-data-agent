@@ -1,11 +1,12 @@
 import os
-from azure.identity import ClientSecretCredential
 from dotenv import load_dotenv
 
 load_dotenv()
 
 
-def get_access_token():
+def _get_access_token():
+    from azure.identity import ClientSecretCredential
+
     credential = ClientSecretCredential(
         tenant_id=os.environ["AZURE_TENANT_ID"],
         client_id=os.environ["AZURE_CLIENT_ID"],
@@ -18,23 +19,14 @@ def get_access_token():
 def get_connection():
     server = os.environ["AZURE_SQL_SERVER"]
     database = os.environ["AZURE_SQL_DATABASE"]
-    token = get_access_token()
 
     try:
-        import pytds
-        conn = pytds.connect(
-            dsn=server,
-            database=database,
-            auth=pytds.login.AzureAuth(token=token),
-            port=1433,
-            cafile=None,
-        )
-        return conn
-    except Exception:
         import struct
         import pyodbc
+
         SQL_COPT_SS_ACCESS_TOKEN = 1256
-        token_bytes = token.encode("utf-16-le")
+        token_str = _get_access_token()
+        token_bytes = token_str.encode("utf-16-le")
         token_struct = struct.pack(f"<I{len(token_bytes)}s", len(token_bytes), token_bytes)
         conn_str = (
             f"Driver={{ODBC Driver 18 for SQL Server}};"
@@ -45,6 +37,21 @@ def get_connection():
         )
         conn = pyodbc.connect(conn_str, attrs_before={SQL_COPT_SS_ACCESS_TOKEN: token_struct})
         return conn
+    except ImportError:
+        pass
+
+    import certifi
+    import pytds
+
+    conn = pytds.connect(
+        dsn=server,
+        database=database,
+        port=1433,
+        access_token_callable=_get_access_token,
+        cafile=certifi.where(),
+        validate_host=False,
+    )
+    return conn
 
 
 def run_query(sql):
